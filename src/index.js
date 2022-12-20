@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const moviesJson = require('../src/data/movies.json');
+const moviesJson = require('../web/src/data/movies.json');
 
 // create and config server
 const server = express();
@@ -14,10 +14,7 @@ server.listen(serverPort, () => {
 });
 
 server.get('/movies', (req, res) => {
-  const response = {
-    success: true,
-    movies: moviesJson,
-    // hemos sustituido los datos que nos daban a pincho
-  };
-  res.json(response);
+  console.log(req);
+  console.log(res);
+  res.json({ moviesJson });
 });
