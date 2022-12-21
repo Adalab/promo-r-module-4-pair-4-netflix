@@ -16,5 +16,8 @@ server.listen(serverPort, () => {
 server.get('/movies', (req, res) => {
   console.log(req);
   console.log(res);
-  res.json(moviesJson);
+  res.json({
+    success: true,
+    movies: moviesJson,
+  });
 });
