@@ -21,3 +21,13 @@ server.get('/movies', (req, res) => {
     movies: moviesJson,
   });
 });
+
+//Cuando creamos un servidor estático, la ruta la tenemos que añadir desde la raíz del proyecto, no desde el archivo donde lo escribamos.
+
+//html
+const staticServerPathWeb = './src/public-react';
+server.use(express.static(staticServerPathWeb));
+
+//imagenes
+const staticServerPathImages = './src/public-movies-images';
+server.use(express.static(staticServerPathImages));
