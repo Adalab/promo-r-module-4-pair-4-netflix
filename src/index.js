@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const moviesJson = require('../web/src/data/movies.json');
+const usersJson = require('../web/src/data/users.json');
 
 // create and config server
 const server = express();
@@ -19,6 +20,14 @@ server.get('/movies', (req, res) => {
   res.json({
     success: true,
     movies: moviesJson,
+  });
+});
+
+server.post('/login', (req, res) => {
+  console.log(req.body.email);
+  res.json({
+    success: true,
+    movies: usersJson,
   });
 });
 
