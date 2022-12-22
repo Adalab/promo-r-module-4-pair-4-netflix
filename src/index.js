@@ -31,6 +31,16 @@ server.post('/login', (req, res) => {
   });
 });
 
+server.get('/movie/:movieId', (req, res) => {
+  // console.log(req.params.movieId);
+  const foundMovie = moviesJson.find(
+    (movies) => movies.id === req.params.movieId
+  );
+  console.log(foundMovie);
+
+  //--------> nos quedamos en el punto 3 del ejercicio del 22/12
+});
+
 //Cuando creamos un servidor estático, la ruta la tenemos que añadir desde la raíz del proyecto, no desde el archivo donde lo escribamos.
 
 //html
