@@ -32,7 +32,7 @@ server.get('/movies', (req, res) => {
 server.post('/login', (req, res) => {
   const query = db.prepare('SELECT * FROM users');
   const usersDB = query.all();
-  console.log(req.body);
+  // console.log(req.body);
   res.json({
     success: true,
     movies: usersDB,
@@ -47,6 +47,27 @@ server.get('/movie/:movieId', (req, res) => {
   console.log(foundMovie);
 
   //--------> nos quedamos en el punto 3 del ejercicio del 22/12
+});
+
+server.post('/sign-up', (req, res) => {
+  const queryInclude = db.prepare('SELECT * FROM users WHERE email = ?');
+  const userInclude = queryInclude.get(req.body.email);
+
+  if (userInclude === undefined) {
+    const query = db.prepare(
+      'INSERT INTO users(email, password) VALUES (? , ?)'
+    );
+    const result = query.run(req.body.email, req.body.password);
+    res.json({
+      success: true,
+      users: result,
+    });
+  } else {
+    res.json({
+      success: false,
+      errorMessage: 'Usuaria ya existente',
+    });
+  }
 });
 
 //Cuando creamos un servidor estático, la ruta la tenemos que añadir desde la raíz del proyecto, no desde el archivo donde lo escribamos.
