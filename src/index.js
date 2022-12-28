@@ -19,8 +19,7 @@ server.listen(serverPort, () => {
 server.get('/movies', (req, res) => {
   const query = db.prepare('SELECT * FROM movies');
   const moviesDB = query.all();
-  console.log(req);
-  console.log(res);
+  console.log(moviesDB);
   res.json({
     success: true,
     movies: moviesDB,
@@ -28,13 +27,22 @@ server.get('/movies', (req, res) => {
 });
 
 server.post('/login', (req, res) => {
-  const query = db.prepare('SELECT * FROM users');
-  const usersDB = query.all();
+  const query = db.prepare(
+    'SELECT * FROM users WHERE email = ? AND password = ?'
+  );
+  const usersDB = query.get(req.body.email, req.body.password);
   // console.log(req.body);
-  res.json({
-    success: true,
-    movies: usersDB,
-  });
+  if (usersDB === undefined) {
+    res.json({
+      success: false,
+      errorMessage: 'Usuaria/o no encontrada/o',
+    });
+  } else {
+    res.json({
+      success: true,
+      userId: usersDB,
+    });
+  }
 });
 
 server.get('/movie/:movieId', (req, res) => {
@@ -42,7 +50,7 @@ server.get('/movie/:movieId', (req, res) => {
   const movieInclude = foundMovie.get(req.params.movieId);
   res.json({
     success: true,
-    users: movieInclude,
+    movies: movieInclude,
   });
 });
 
@@ -65,6 +73,21 @@ server.post('/sign-up', (req, res) => {
       errorMessage: 'Usuaria ya existente',
     });
   }
+});
+server.get('/user/movies', (req, res) => {
+  const foundMovie = db.prepare('SELECT * FROM users WHERE id = ?');
+  const movieInclude = foundMovie.get(req.params.movieId);
+  res.json({
+    success: true,
+    movies: [
+      {
+        id: '2',
+        title: 'Friends',
+        gender: 'Comedia',
+        image: 'https://via.placeholder.com/150',
+      },
+    ],
+  });
 });
 
 //Cuando creamos un servidor estático, la ruta la tenemos que añadir desde la raíz del proyecto, no desde el archivo donde lo escribamos.
