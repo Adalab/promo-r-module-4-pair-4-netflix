@@ -8,6 +8,7 @@ server.use(cors());
 server.use(express.json());
 const db = new DataBase('./src/db/database.db', {
   verbose: console.log,
+  // to see queries
 });
 
 // init express aplication
@@ -19,7 +20,7 @@ server.listen(serverPort, () => {
 server.get('/movies', (req, res) => {
   const query = db.prepare('SELECT * FROM movies');
   const moviesDB = query.all();
-  console.log(moviesDB);
+  // console.log(moviesDB);
   res.json({
     success: true,
     movies: moviesDB,
@@ -31,7 +32,7 @@ server.post('/login', (req, res) => {
     'SELECT * FROM users WHERE email = ? AND password = ?'
   );
   const usersDB = query.get(req.body.email, req.body.password);
-  // console.log(req.body);
+  // console.log(usersDB);
   if (usersDB === undefined) {
     res.json({
       success: false,
@@ -48,6 +49,7 @@ server.post('/login', (req, res) => {
 server.get('/movie/:movieId', (req, res) => {
   const foundMovie = db.prepare('SELECT * FROM users WHERE id = ?');
   const movieInclude = foundMovie.get(req.params.movieId);
+  // console.log(movieInclude);
   res.json({
     success: true,
     movies: movieInclude,
@@ -74,9 +76,10 @@ server.post('/sign-up', (req, res) => {
     });
   }
 });
+
 server.get('/user/movies', (req, res) => {
-  const foundMovie = db.prepare('SELECT * FROM users WHERE id = ?');
-  const movieInclude = foundMovie.get(req.params.movieId);
+  // const foundMovie = db.prepare('SELECT * FROM users WHERE id = ?');
+  // const movieInclude = foundMovie.get(req.params.movieId);
   res.json({
     success: true,
     movies: [
