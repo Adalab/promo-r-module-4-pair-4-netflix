@@ -1,7 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const moviesJson = require('../web/src/data/movies.json');
-const usersJson = require('../web/src/data/users.json');
 const DataBase = require('better-sqlite3');
 
 // create and config server
@@ -40,13 +38,12 @@ server.post('/login', (req, res) => {
 });
 
 server.get('/movie/:movieId', (req, res) => {
-  // console.log(req.params.movieId);
-  const foundMovie = moviesJson.find(
-    (movies) => movies.id === req.params.movieId
-  );
-  console.log(foundMovie);
-
-  //--------> nos quedamos en el punto 3 del ejercicio del 22/12
+  const foundMovie = db.prepare('SELECT * FROM users WHERE id = ?');
+  const movieInclude = foundMovie.get(req.params.movieId);
+  res.json({
+    success: true,
+    users: movieInclude,
+  });
 });
 
 server.post('/sign-up', (req, res) => {
