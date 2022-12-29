@@ -78,7 +78,7 @@ server.post('/sign-up', (req, res) => {
 });
 
 server.get('/user/movies', (req, res) => {
-  // const foundMovie = db.prepare('SELECT * FROM users WHERE id = ?');
+  // const foundMovie = db.prepare('SELECT * FROM users, movies WHERE id = ?');
   // const movieInclude = foundMovie.get(req.params.movieId);
   res.json({
     success: true,
